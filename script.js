@@ -18,6 +18,11 @@ const onGenerateSubmit = (e) => {
       hideSpinner();
 
       generateQRCode(url, size);
+
+      setTimeout(() => {
+        const saveUrl = qr.querySelector("img").src;
+        createSaveBtn(saveUrl);
+      }, 50);
     }, 3000);
   }
 };
@@ -38,8 +43,24 @@ const hideSpinner = () => {
   document.getElementById("spinner").style.display = "none";
 };
 
+// Clear UI
 const clearUI = () => {
   qr.innerHTML = "";
+  const saveLink = document.getElementById("save-link");
+  if (saveLink) {
+    saveLink.remove();
+  }
+};
+
+const createSaveBtn = (saveUrl) => {
+  const link = document.createElement("a");
+  link.id = "save-link";
+  link.classList =
+    "bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded w-1/3 m-auto my-5";
+  link.href = saveUrl;
+  link.download = "qrcode";
+  link.innerText = "Save QR Code";
+  document.getElementById("generated").appendChild(link);
 };
 
 hideSpinner();
